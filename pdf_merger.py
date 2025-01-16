@@ -1,14 +1,35 @@
-from pathlib import Path
+import streamlit as st
 import PyPDF2
+import io
 
-merger = PyPDF2.PdfMerger()
+if __name__ == "__main__":
+    st.set_page_config(page_title="PDF merger")
+    st.header("📑 PDF Merger")
+   
+    merger = PyPDF2.PdfMerger()
 
-files_dir = Path("./files")  # Define the directory as a Path object
+    files = st.file_uploader("Upload your PDFs", type=["pdf"], accept_multiple_files=True)
 
-for file in files_dir.glob("*.pdf"):  # Use pathlib's glob method to find PDF files
-    merger.append(str(file))  # Convert Path object to string when passing to PyPDF2
+    if files is None:
+        st.stop()
+    
+    finished_uploads = st.checkbox("All files uploaded")
+    if not finished_uploads:
+        st.stop()
 
-merger.write("merged.pdf")
-merger.close()  # Close the merger to free resources
+    for file in files:
+        merger.append(file)
+    
+    pdf_buffer = io.BytesIO()
+    merger.write(pdf_buffer)
+    merger.close()
+    pdf_buffer.seek(0)
+    
+    st.download_button(
+        label="📥 Download Merged PDF",
+        type="primary",
+        data=pdf_buffer,
+        file_name="merged.pdf",
+        mime="application/pdf"
+    )
 
-print("Done")
