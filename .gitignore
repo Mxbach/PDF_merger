@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# venv
+pdf_venv/*
+
 # C extensions
 *.so
 
