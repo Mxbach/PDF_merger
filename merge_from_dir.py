@@ -3,12 +3,12 @@ import PyPDF2
 
 merger = PyPDF2.PdfMerger()
 
-files_dir = Path("./files")  # Define the directory as a Path object
+files_dir = Path("./input_pdfs")
 
-for file in files_dir.glob("*.pdf"):  # Use pathlib's glob method to find PDF files
-    merger.append(str(file))  # Convert Path object to string when passing to PyPDF2
+for file in files_dir.glob("*.pdf"):
+    merger.append(str(file))
 
 merger.write("merged.pdf")
-merger.close()  # Close the merger to free resources
+merger.close()
 
 print("Done")
