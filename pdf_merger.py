@@ -19,9 +19,9 @@ if __name__ == "__main__":
     for file in files:
         db[file.name] = file
     
-    finished_uploads = st.checkbox("All files uploaded")
-    if not finished_uploads:
-        st.stop()
+    # finished_uploads = st.checkbox("All files uploaded")
+    # if not finished_uploads:
+    #     st.stop()
 
     file_names = [f.name for f in files]
     sort_widget = sort_items(file_names, direction="vertical")
