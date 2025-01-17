@@ -1,4 +1,6 @@
 import streamlit as st
+from streamlit.runtime.uploaded_file_manager import UploadedFile
+from streamlit_sortables import sort_items
 import PyPDF2
 import io
 
@@ -8,16 +10,25 @@ if __name__ == "__main__":
    
     merger = PyPDF2.PdfMerger()
 
-    files = st.file_uploader("Upload your PDFs", type=["pdf"], accept_multiple_files=True)
-
+    files: None | list[UploadedFile] = st.file_uploader("Upload your PDFs", type=["pdf"], accept_multiple_files=True)
+    
     if files is None:
         st.stop()
+
+    db = {}
+    for file in files:
+        db[file.name] = file
     
     finished_uploads = st.checkbox("All files uploaded")
     if not finished_uploads:
         st.stop()
 
-    for file in files:
+    file_names = [f.name for f in files]
+    sort_widget = sort_items(file_names, direction="vertical")
+   
+    sorted_files = [db[s] for s in sort_widget]
+
+    for file in sorted_files:
         merger.append(file)
     
     pdf_buffer = io.BytesIO()
