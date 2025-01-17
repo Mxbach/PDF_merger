@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     files: None | list[UploadedFile] = st.file_uploader("Upload your PDFs", type=["pdf"], accept_multiple_files=True)
     
-    if files is None:
+    if files is None or not files:
         st.stop()
 
     db = {}
